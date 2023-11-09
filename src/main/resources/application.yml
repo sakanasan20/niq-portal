@@ -6,8 +6,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  security:
-    user:
-      name: admin
-      password: admin
 
