@@ -10,7 +10,7 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import tw.niq.portal.model.UserLoginModel;
 
-@FeignClient(name = "loginClient", url = "https://api.niq.tw")
+@FeignClient(name = "loginClient", url = "${niq.tw.api.url}")
 public interface LoginClient {
 	
 	org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(LoginClient.class);

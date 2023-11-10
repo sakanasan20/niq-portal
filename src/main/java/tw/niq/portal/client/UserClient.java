@@ -15,7 +15,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import tw.niq.portal.model.UserModel;
 
 @Headers("x-requester-id: {requester}")
-@FeignClient(name = "userClient", url = "https://api.niq.tw")
+@FeignClient(name = "userClient", url = "${niq.tw.api.url}")
 public interface UserClient {
 	
 	@GetMapping("/api/v1/users")

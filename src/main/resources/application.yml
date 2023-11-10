@@ -1,10 +1,25 @@
 spring:
-  datasource:
-    url: ${DB_URL}
-    username: ${DB_USR}
-    password: ${DB_PWD}
-  jpa:
-    hibernate:
-      ddl-auto: update
+  profiles:
+    active: prod
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+niq:
+  tw:
+    api:
+      url: http://api.niq.tw
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+niq:
+  tw:
+    api:
+      url: http://localhost:8080
+server:
+  port: 8888
 logging.level:
   '[org.springframework.security]': debug
