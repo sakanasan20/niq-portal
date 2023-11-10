@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -68,6 +70,13 @@ public class WebSecurityConfig {
 				.httpBasic(Customizer.withDefaults());
 
 		return http.build();
+	}
+	
+	@Bean
+	public HttpFirewall getHttpFirewall() {
+	    StrictHttpFirewall strictHttpFirewall = new StrictHttpFirewall();
+	    strictHttpFirewall.setAllowBackSlash(true);
+	    return strictHttpFirewall;
 	}
 	
 }
