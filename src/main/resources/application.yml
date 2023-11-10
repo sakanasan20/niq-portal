@@ -9,7 +9,7 @@ spring:
 niq:
   tw:
     api:
-      url: http://api.niq.tw
+      url: https://api.niq.tw
 ---
 spring:
   config:
