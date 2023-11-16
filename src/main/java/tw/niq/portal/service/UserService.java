@@ -10,4 +10,6 @@ public interface UserService {
 	
 	UserModel getByUserId(String authorization, String userId);
 	
+	UserModel getByUserId(String userId);
+	
 }

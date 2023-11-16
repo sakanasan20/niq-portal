@@ -34,5 +34,11 @@ public class UserServiceRestTemplate implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public UserModel getByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

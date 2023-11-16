@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -32,6 +33,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		
 	private final LoginService loginService;
 	private final UserService userService;
+	private final RedisTemplate<String, String> redisTemplate;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -70,7 +72,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			throw new AuthenticationServiceException("Login Failed");
 		}
 
-		UserModel userModel = userService.getByUserId(authorization, userId);
+		redisTemplate.opsForValue().set(userId, authorization);
+
+//		UserModel userModel = userService.getByUserId(authorization, userId);
+		UserModel userModel = userService.getByUserId(userId);
 
 		Object principalToReturn = userModel;
 		

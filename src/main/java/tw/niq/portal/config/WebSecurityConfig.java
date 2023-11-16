@@ -2,6 +2,7 @@ package tw.niq.portal.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import lombok.RequiredArgsConstructor;
 import tw.niq.portal.security.CustomAuthenticationProvider;
+import tw.niq.portal.security.CustomLogoutHandler;
 import tw.niq.portal.service.LoginService;
 import tw.niq.portal.service.UserService;
 
@@ -29,6 +31,8 @@ public class WebSecurityConfig {
 	private final UserService userService;
 	private final LoginService loginService;
 	private final SessionRegistry sessionRegistry;
+	private final RedisTemplate<String, String> redisTemplate;
+	private final CustomLogoutHandler customLogoutHandler;
 	
 	@Bean
 	protected SecurityFilterChain configure(HttpSecurity http, 
@@ -38,7 +42,7 @@ public class WebSecurityConfig {
 		
 		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
 		authenticationManagerBuilder.eraseCredentials(false);
-		authenticationManagerBuilder.authenticationProvider(new CustomAuthenticationProvider(loginService, userService));
+		authenticationManagerBuilder.authenticationProvider(new CustomAuthenticationProvider(loginService, userService, redisTemplate));
 		AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 		
 		http
@@ -64,6 +68,7 @@ public class WebSecurityConfig {
 						.failureUrl("/login?error"))
 				.logout(logout -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+						.addLogoutHandler(customLogoutHandler)
 						.logoutSuccessUrl("/login?logout").permitAll())
 				.httpBasic(Customizer.withDefaults());
 
