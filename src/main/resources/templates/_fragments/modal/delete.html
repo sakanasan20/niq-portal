@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>	
+	<div 
+		class="modal fade" 
+		th:id="${modalId}" 
+		tabindex="-1" 
+		aria-labelledby="${modalLabelId}" 
+		aria-hidden="true" 
+		th:fragment="delete-user (user)"
+		th:with="modalId=${'deleteUserModal-' + user.userId}, modalLabelId=${'deleteUserModalLabel-' + user.userId}">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" th:id="${modalLabelId}">Delete User</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" th:text="${'Are you sure to delete user [ ' + user.username + ' ]?'}"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<a class="btn btn-primary" th:href="@{/users/delete/{userId} (userId=${user.userId})}" role="button">Confirm</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div 
+		class="modal fade" 
+		th:id="${modalId}" 
+		tabindex="-1" 
+		aria-labelledby="${modalLabelId}" 
+		aria-hidden="true" 
+		th:fragment="delete-role (role)"
+		th:with="modalId=${'deleteRoleModal-' + role.name}, modalLabelId=${'deleteRoleModalLabel-' + role.name}">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" th:id="${modalLabelId}">Delete Role</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" th:text="${'Are you sure to delete role [ ' + role.name + ' ]?'}"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<a class="btn btn-primary" th:href="@{/roles/delete/{name} (name=${role.name})}" role="button">Confirm</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div 
+		class="modal fade" 
+		th:id="${modalId}" 
+		tabindex="-1" 
+		aria-labelledby="${modalLabelId}" 
+		aria-hidden="true" 
+		th:fragment="delete-authority (authority)"
+		th:with="modalId=${'deleteAuthorityModal-' + authority.name}, modalLabelId=${'deleteAuthorityModalLabel-' + authority.name}">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" th:id="${modalLabelId}">Delete Authority</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" th:text="${'Are you sure to delete authority [ ' + authority.name + ' ]?'}"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<a class="btn btn-primary" th:href="@{/authorities/delete/{name} (name=${authority.name})}" role="button">Confirm</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

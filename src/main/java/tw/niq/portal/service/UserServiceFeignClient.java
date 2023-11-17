@@ -31,8 +31,7 @@ public class UserServiceFeignClient implements UserService {
 
 	@Override
 	public Set<UserModel> getAll(String authorization, int page, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		return userClient.getAll(authorization, page, limit);
 	}
 
 }

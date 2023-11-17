@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>	
+	<div 
+		class="sidebar border border-right col-md-3 col-lg-2 p-0 bg-body-tertiary" 
+		th:fragment="menu" 
+		th:with="requestURI=${#ctx.getExchange().getRequest().getRequestURI()}">
+		<div class="offcanvas-md offcanvas-end bg-body-tertiary" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title" id="sidebarMenuLabel">NIQ</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
+			</div>
+			<div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3 overflow-y-auto">
+			
+				<ul class="list-unstyled ps-0">
+					<li class="mb-1">
+						<button
+							class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link align-items-center gap-2"
+							data-bs-toggle="collapse" 
+							data-bs-target="#home-collapse"
+							th:attr="aria-expanded=${requestURI.equals('/')}"
+							th:classappend="${requestURI.equals('/') ? 'active' : ''}">
+							<i class="bi-house-fill"></i> Home
+						</button>
+						<div class="collapse" id="home-collapse" th:classappend="${requestURI.equals('/') ? 'show' : ''}">
+							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+								<li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
+								<li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Updates</a></li>
+								<li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Reports</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="mb-1">
+						<button
+							class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed nav-link align-items-center gap-2"
+							data-bs-toggle="collapse" 
+							data-bs-target="#admin-collapse"
+							th:attr="aria-expanded=${requestURI.startsWith('/admin')}"
+							th:classappend="${requestURI.startsWith('/admin') ? 'active' : ''}">
+							<i class="bi-gear"></i> IAM
+						</button>
+						<div class="collapse" id="admin-collapse" 
+							th:classappend="${requestURI.contains('/users') || requestURI.contains('/roles') || requestURI.contains('/authorities') ? 'show' : ''}">
+							<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+								<li><a href="/users" class="d-inline-flex text-decoration-none rounded" th:classappend="${requestURI.contains('/users') ? '' : 'link-body-emphasis'}">User</a></li>
+								<li><a href="/roles" class="d-inline-flex text-decoration-none rounded" th:classappend="${requestURI.contains('/roles') ? '' : 'link-body-emphasis'}">Role</a></li>
+								<li><a href="/authorities" class="d-inline-flex text-decoration-none rounded" th:classappend="${requestURI.contains('/authorities') ? '' : 'link-body-emphasis'}">Authority</a></li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+
+				<hr class="my-3">
+
+				<ul class="nav flex-column mb-auto">
+					<li class="nav-item">
+						<button type="button" class="nav-link d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="bi-door-closed"></i> Sign out</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div th:replace="~{_fragments/modal/logout :: logout}"></div>
+	</div>
+</body>
+</html>

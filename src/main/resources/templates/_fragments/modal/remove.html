@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+	<div 
+		class="modal fade" 
+		th:id="${modalId}" 
+		tabindex="-1" 
+		aria-labelledby="${modalLabelId}" 
+		aria-hidden="true" 
+		th:fragment="remove-users-from-role (role, userOptions)"
+		th:with="modalId=${'removeUsersFromRole' + 'Modal'}, modalLabelId=${'removeUsersFromRole' + 'ModalLabel'}">
+		<form th:action="@{/roles/remove/users}" method="POST">
+			<input type="hidden" name="roleName" th:value=${role.name}>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" th:id="${modalLabelId}">Remove Users From Role</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="form-check text-start my-3" th:each="userOption : ${userOptions}">
+							<input type="checkbox" class="form-check-input" th:id="${'flexCheckDefault-' + userOption.userId}" name="userIds" th:value="${userOption.userId}">
+							<label class="form-check-label" th:for="${'flexCheckDefault-' + userOption.userId}" th:text="${userOption.username}"></label>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<input type="submit" class="btn btn-primary" value="Confirm">
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	<div 
+		class="modal fade" 
+		th:id="${modalId}" 
+		tabindex="-1" 
+		aria-labelledby="${modalLabelId}" 
+		aria-hidden="true" 
+		th:fragment="remove-authorities-from-role (role, authorityOptions)"
+		th:with="modalId=${'removeAuthoritiesFromRole' + 'Modal'}, modalLabelId=${'removeAuthoritiesFromRole' + 'ModalLabel'}">
+		<form th:action="@{/roles/remove/authorities}" method="POST">
+			<input type="hidden" name="roleName" th:value=${role.name}>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" th:id="${modalLabelId}">Remove Authorities From Role</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="form-check text-start my-3" th:each="authorityOption : ${authorityOptions}">
+							<input type="checkbox" class="form-check-input" th:id="${'flexCheckDefault-' + authorityOption.name}" name="names" th:value="${authorityOption.name}">
+							<label class="form-check-label" th:for="${'flexCheckDefault-' + authorityOption.name}" th:text="${authorityOption.name}"></label>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<input type="submit" class="btn btn-primary" value="Confirm">
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>
