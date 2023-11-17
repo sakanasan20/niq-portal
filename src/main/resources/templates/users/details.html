@@ -43,7 +43,6 @@
 						<li class="nav-item"><a class="nav-link" href="/users"> <i class="bi-person"></i> User </a></li>
 						<li class="nav-item"><a class="nav-link" href="/roles"> <i class="bi-person"></i> Role </a></li>
 						<li class="nav-item"><a class="nav-link" href="/authorities"> <i class="bi-person"></i> Authority </a></li>
-						<li class="nav-item"><a class="nav-link" href="loggedIn"> <i class="bi-person"></i> Logged In </a></li>
 					</ul>
 
 					<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -67,29 +66,51 @@
 					</div>
 				</div>
 
-				<h2>User</h2>
+				<h2>User Details</h2>
 				
-				<div class="table-responsive">
-					<table class="table table-striped table-sm">
-						<thead>
-							<tr>
-								<th scope="col">Username</th>
-								<th scope="col"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="user : ${users}">
-								<td th:text="${user.username}"></td>
-								<td>
-									<div class="btn-group me-2">
-										<a class="btn btn-sm btn-outline-secondary" th:href="@{/users/{userId} (userId=${user.userId})}">Edit</a>
-										<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" th:data-bs-target="${'#deleteUserModal-' + user.userId}">Delete</button>		
-									</div>
-									<div th:replace="~{_fragments/modal/delete :: delete-user (user=${user})}"></div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="w-100 m-auto">
+					<form th:action="@{/users}" method="POST" modelAttribute="user" th:object="${user}">
+						<input type="hidden" name="userId" th:value="${user.userId}">
+						<!-- Username -->
+						<div class="form-floating">
+							<input type="text" class="form-control" id="username" name="username" placeholder="Username" th:value="${user.username}" th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''">
+							<label for="username">Username</label>
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+						</div>
+						
+						<!-- Password -->
+						<div class="form-floating" th:if="${#strings.isEmpty(user.password)}">
+							<input type="password" class="form-control" id="password" name="password" placeholder="Password" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''">
+							<label for="password">Password</label>
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+						</div>
+						
+						<!-- Account Non Expired -->
+						<div class="form-check text-start my-3">
+							<input type="checkbox" class="form-check-input" id="accountNonExpired" name="accountNonExpired" th:checked="${user.accountNonExpired}">
+							<label class="form-check-label" for="accountNonExpired"> Account Non Expired </label>
+						</div>
+						
+						<!-- Account Non Locked -->
+						<div class="form-check text-start my-3">
+							<input type="checkbox" class="form-check-input" id="accountNonLocked" name="accountNonLocked" th:checked="${user.accountNonLocked}">
+							<label class="form-check-label" for="accountNonLocked"> Account Non Locked </label>
+						</div>
+						
+						<!-- Credentials Non Expired -->
+						<div class="form-check text-start my-3">
+							<input type="checkbox" class="form-check-input" id="credentialsNonExpired" name="credentialsNonExpired" th:checked="${user.credentialsNonExpired}">
+							<label class="form-check-label" for="credentialsNonExpired"> Credentials Non Expired </label>
+						</div>
+						
+						<!-- Enabled -->
+						<div class="form-check text-start my-3">
+							<input type="checkbox" class="form-check-input" id="enabled" name="enabled" th:checked="${user.enabled}">
+							<label class="form-check-label" for="enabled"> Enabled </label>
+						</div>
+						
+						<input type="submit" class="btn btn-primary w-100 py-2" value="Submit">
+					</form>
 				</div>
 			</main>
 		</div>

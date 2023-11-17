@@ -59,16 +59,20 @@
 			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 				<div
 					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-					<h1 class="h2">IAM</h1>
+					<h1 class="h2">Dashboard</h1>
 					<div class="btn-toolbar mb-2 mb-md-0">
 						<div class="btn-group me-2">
-							<a class="btn btn-sm btn-outline-secondary" href="/users/create">Create</a>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+							<button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
 						</div>
+						<button type="button"
+							class="btn btn-sm btn-outline-secondary dropdown-toggle">
+							<span data-feather="calendar"></span> This week
+						</button>
 					</div>
 				</div>
-
-				<h2>User</h2>
 				
+				<h2>Section title</h2>
 				<div class="table-responsive">
 					<table class="table table-striped table-sm">
 						<thead>
@@ -80,13 +84,7 @@
 						<tbody>
 							<tr th:each="user : ${users}">
 								<td th:text="${user.username}"></td>
-								<td>
-									<div class="btn-group me-2">
-										<a class="btn btn-sm btn-outline-secondary" th:href="@{/users/{userId} (userId=${user.userId})}">Edit</a>
-										<button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" th:data-bs-target="${'#deleteUserModal-' + user.userId}">Delete</button>		
-									</div>
-									<div th:replace="~{_fragments/modal/delete :: delete-user (user=${user})}"></div>
-								</td>
+								<td><a th:href="@{/manualLogout/{userId}(userId=${user.userId})}">Logout</a></td>
 							</tr>
 						</tbody>
 					</table>

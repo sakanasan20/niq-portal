@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,28 +41,29 @@ public class UserController {
 		return TEMPLATES_ROOT + "list";
 	}
 	
-//	@GetMapping("/{userId}")
-//	public String getUser(
-//			@PathVariable("userId") String userId, 
-//			Model model) {
-//		UserModel userModel;
-//		if (userId.equals("create")) {
-//			// Create
-//			userModel = UserModel.builder()
-//					.accountNonExpired(true)
-//					.accountNonLocked(true)
-//					.credentialsNonExpired(true)
-//					.enabled(true)
-//					.build();
-//		} else {
-//			// Update
-//			UserDto userDto = userService.getByUserId(userId);
-//			userModel = userMapper.toUserModel(userDto, context);
-//		}
-//		model.addAttribute("user", userModel);
-//		return TEMPLATES_ROOT + "details";
-//	}
-//	
+	@GetMapping("/{userId}")
+	public String getUser(
+			@AuthenticationPrincipal UserModel authUser, 
+			@PathVariable("userId") String userId, 
+			Model model) {
+		UserModel userModel;
+		if (userId.equals("create")) {
+			// Create
+			userModel = UserModel.builder()
+					.accountNonExpired(true)
+					.accountNonLocked(true)
+					.credentialsNonExpired(true)
+					.enabled(true)
+					.build();
+		} else {
+			// Update
+			String authorization = redisTemplate.opsForValue().get(authUser.getUserId());
+			userModel = userService.getByUserId(authorization, userId);
+		}
+		model.addAttribute("user", userModel);
+		return TEMPLATES_ROOT + "details";
+	}
+	
 //	@PostMapping
 //	public String createOrUpdateUser(
 //			@Valid @ModelAttribute("user") UserModel userModel, 
